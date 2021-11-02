@@ -1085,7 +1085,10 @@
 <p>Enter in the directory <code>multiplier2_cpp</code> and execute:</p>
 <pre><code class="language-text">make
 </code></pre>
-<p>which creates an executable called <code>multiplier2</code>. Now, we execute it indicating the input file and the name for the witness file. </p>
+<p>which creates an executable called <code>multiplier2</code>. </p>
+<p>Note. To compile the C++ source, we rely on some libraries that you need to have installed in your system. 
+In particular, we use <code>nlohmann-json3-dev</code>, <code>libgmp-dev</code> and <code>nasm</code>.</p>
+<p>After the executable is created, we execute it indicating the input file and the name for the witness file. </p>
 <pre><code class="language-text">./multiplier2 input.json witness.wtns
 </code></pre>
 <p>This command will generate the file <code>ẁitness.wtns</code> which has a format compatible with <code>snarkjs</code>, and can be used to create the proof. </p>
