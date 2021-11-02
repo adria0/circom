@@ -411,22 +411,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#trusted-setup-powers-of-tau" class="md-nav__link">
-    Trusted setup: Powers of Tau 
-  </a>
-  
-    <nav class="md-nav" aria-label="Trusted setup: Powers of Tau ">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#generating-a-groth16-zkp" class="md-nav__link">
-    Generating a Groth16 ZKP 
+  <a href="#powers-of-tau" class="md-nav__link">
+    Powers of Tau 
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2" class="md-nav__link">
+    Phase 2 
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-a-proof" class="md-nav__link">
+    Generating a Proof
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-a-proof" class="md-nav__link">
+    Verifying a Proof
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-from-a-smart-contract" class="md-nav__link">
+    Verifying from a Smart Contract
+  </a>
   
 </li>
       
@@ -1027,22 +1042,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#trusted-setup-powers-of-tau" class="md-nav__link">
-    Trusted setup: Powers of Tau 
-  </a>
-  
-    <nav class="md-nav" aria-label="Trusted setup: Powers of Tau ">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#generating-a-groth16-zkp" class="md-nav__link">
-    Generating a Groth16 ZKP 
+  <a href="#powers-of-tau" class="md-nav__link">
+    Powers of Tau 
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2" class="md-nav__link">
+    Phase 2 
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-a-proof" class="md-nav__link">
+    Generating a Proof
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-a-proof" class="md-nav__link">
+    Verifying a Proof
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-from-a-smart-contract" class="md-nav__link">
+    Verifying from a Smart Contract
+  </a>
   
 </li>
       
@@ -1065,11 +1095,18 @@
                 
                 <h1 id="proving-circuits">Proving circuits</h1>
 <p>After compiling the circuit and running the witness calculator with 
-an appropriate input we have a file with extension .wtns that 
-contains all the computed signals and a file with extension .r1cs that contains the constraints describing the circuit. Both files will be used in our proof.</p>
-<p>Now, we will use the <code>snarkjs</code> tool to generate and validate our zk-SNARK. In particular, using the multiplier2, <strong>we will prove that we are able to provide the two factors of the number 33</strong>. That is, we will show that we know two integers <code>a</code> and <code>b</code> such that when we multiply them, it results in the number 33.</p>
-<p>Before generating the proof, you will need to generate a <a href="../../background/background#trusted-setup">trusted setup</a>. Generating a trusted setup consists of 2 parts: powers of tau and phase 2. Next, we provide a very basic ceremony for creating the trusted setup for the <a href="https://eprint.iacr.org/2016/260">Groth16</a> zk-SNARK protocol. We also provide the basic commands to create and verify <a href="https://eprint.iacr.org/2016/260">Groth16</a> proofs. Review the related <a href="../../background/background">Background</a> section and check <a href="https://github.com/iden3/snarkjs">the snarkjs tutorial</a> for further information.</p>
-<h2 id="trusted-setup-powers-of-tau">Trusted setup: Powers of Tau <a id="my-first-trusted-setup"></a></h2>
+an appropriate input, we have a file with extension .wtns that 
+contains all the computed signals and, a file with extension .r1cs that contains the constraints describing the circuit. Both files will be used to create our proof.</p>
+<p>Now, we will use the <code>snarkjs</code> tool to generate and validate a proof for our input. In particular, using the multiplier2, <strong>we will prove that we are able to provide the two factors of the number 33</strong>. That is, we will show that we know two integers <code>a</code> and <code>b</code> such that when we multiply them, it results in the number 33.</p>
+<p>We are going to use the <a href="https://eprint.iacr.org/2016/260">Groth16</a> zk-SNARK protocol.
+To use this protocol, you will need to generate a <a href="../../background/background#trusted-setup">trusted setup</a>.
+<strong>Groth16 requires a per circuit trusted setup</strong>. In more detail, the trusted setup consists of 2 parts:</p>
+<ul>
+<li>The powers of tau, which is independent of the circuit.</li>
+<li>The phase 2, which depends on the circuit. </li>
+</ul>
+<p>Next, we provide a very basic ceremony for creating the trusted setup and we also provide the basic commands to create and verify <a href="https://eprint.iacr.org/2016/260">Groth16</a> proofs. Review the related <a href="../../background/background">Background</a> section and check <a href="https://github.com/iden3/snarkjs">the snarkjs tutorial</a> for further information.</p>
+<h2 id="powers-of-tau">Powers of Tau <a id="my-first-trusted-setup"></a></h2>
 <!-- 
 You can access the **help** of `snarkjs` by typing the command:
 
@@ -1090,42 +1127,18 @@ snarkjs print -r multiplier2.r1cs -s multiplier2.sym
 <p>Then, we contribute to the ceremony:</p>
 <pre><code class="language-text">snarkjs powersoftau contribute pot12_0000.ptau pot12_0001.ptau --name=&quot;First contribution&quot; -v
 </code></pre>
-<!--
-We can verify the protocol so far:
-
-
-<pre><code class="language-text">snarkjs powersoftau verify pot12_0001.ptau
+<p>Now, we have the contributions to the powers of tau in the file <em>pot12_0001.ptau</em> and 
+we can proceed with the Phase 2.</p>
+<h2 id="phase-2">Phase 2 <a id="my-first-trusted-setup"></a></h2>
+<p>The <strong>phase 2</strong> is <strong>circuit-specific</strong>. 
+Execute the following command to start the generation of this phase:</p>
+<pre><code class="language-text">snarkjs powersoftau prepare phase2 pot12_0001.ptau pot12_final.ptau -v
 </code></pre>
-
-
-Finally, we apply a random beacon:
-
-
-<pre><code class="language-text">snarkjs powersoftau beacon pot12_0001.ptau pot12_beacon.ptau 0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f 10 -n=&quot;Final Beacon&quot;
---&gt;```
-
-Now, we have the contributions to the powers of tau in the file *pot12_0001.ptau* and 
-we can proceed with the Phase 2.
-
-## Trusted setup: Phase 2 &lt;a id=&quot;my-first-trusted-setup&quot;&gt;&lt;/a&gt;
-
-The **phase 2** is **circuit-specific**. 
-Execute the following command to start the generation of this phase:
-
-```text
-snarkjs powersoftau prepare phase2 pot12_0001.ptau pot12_final.ptau -v
-</code></pre>
-
-<!--
-We can verify the final ptau file:
-snarkjs powersoftau verify pot12_final.ptau
--->
-
-<p>In this phase, we will generate a <code>.zkey</code> file that will contain the proving and verification keys together with all phase 2 contributions.
+<p>Next, we generate a <code>.zkey</code> file that will contain the proving and verification keys together with all phase 2 contributions.
 Execute the following command to start a new zkey:</p>
 <pre><code class="language-text">snarkjs groth16 setup multiplier2.r1cs pot12_final.ptau multiplier2_0000.zkey
 </code></pre>
-<p>Contribute to the phase 2 ceremony:</p>
+<p>Contribute to the phase 2 of the ceremony:</p>
 <pre><code class="language-text">snarkjs zkey contribute multiplier2_0000.zkey multiplier2_0001.zkey --name=&quot;1st Contributor Name&quot; -v
 </code></pre>
 <!-- 
@@ -1172,25 +1185,27 @@ If everything checks out, you should see the following at the top of the output:
 <p>Export the verification key:</p>
 <pre><code class="language-text">snarkjs zkey export verificationkey multiplier2_0001.zkey verification_key.json
 </code></pre>
-<h3 id="generating-a-groth16-zkp">Generating a Groth16 ZKP <a id="my-first-zero-knowledge-proof"></a></h3>
+<h2 id="generating-a-proof">Generating a Proof</h2>
 <p>Once the witness is computed and the trusted setup is already executed, we can <strong>generate a zk-proof</strong> associated to the circuit and the witness:</p>
-<pre><code class="language-text">snarkjs groth16 prove multiplier2_final.zkey witness.wtns proof.json public.json
+<pre><code class="language-text">snarkjs groth16 prove multiplier2_0001.zkey witness.wtns proof.json public.json
 </code></pre>
 <p>This command generates a <a href="https://eprint.iacr.org/2016/260">Groth16</a> proof and outputs two files:</p>
 <ul>
 <li><code>proof.json</code>: it contains the proof.</li>
 <li><code>public.json</code>: it contains the values of the public inputs and outputs.</li>
 </ul>
+<h2 id="verifying-a-proof">Verifying a Proof</h2>
 <p>To <strong>verify the proof</strong>, execute the following command:</p>
 <pre><code class="language-text">snarkjs groth16 verify verification_key.json public.json proof.json
 </code></pre>
 <p>The command uses the files <code>verification_key.json</code> we exported earlier,<code>proof.json</code> and <code>public.json</code> to check if the proof is valid. If the proof is valid, the command outputs an <code>OK</code>.</p>
 <p>A valid proof not only proves that we know a set of signals that satisfy the circuit, but also that the public inputs and outputs that we use match the ones described in the <code>public.json</code> file.</p>
+<h2 id="verifying-from-a-smart-contract">Verifying from a Smart Contract</h2>
 <p>​👉 It is also possible to generate a <strong>Solidity verifier</strong> that allows <strong>verifying proofs on Ethereum blockchain</strong>.</p>
 <p>First, we need to generate the Solidity code using the command:</p>
-<pre><code class="language-text">snarkjs zkey export solidityverifier multiplier2_final.zkey verifier.sol
+<pre><code class="language-text">snarkjs zkey export solidityverifier multiplier2_0001.zkey verifier.sol
 </code></pre>
-<p>This command takes validation key <code>multiplier2_final.zkey</code> and outputs Solidity code in a file named <code>verifier.sol</code>. You can take the code from this file and cut and paste it in Remix. You will see that the code contains two contracts: <code>Pairing</code> and <code>Verifier</code>. You only need to deploy the <code>Verifier</code> contract.</p>
+<p>This command takes validation key <code>multiplier2_0001.zkey</code> and outputs Solidity code in a file named <code>verifier.sol</code>. You can take the code from this file and cut and paste it in Remix. You will see that the code contains two contracts: <code>Pairing</code> and <code>Verifier</code>. You only need to deploy the <code>Verifier</code> contract.</p>
 <p>You may want to use first a testnet like Rinkeby, Kovan or Ropsten. You can also use the JavaScript VM, but in some browsers the verification takes long and the page may freeze.</p>
 <p>The <code>Verifier</code> has a <code>view</code> function called <code>verifyProof</code> that returns <code>TRUE</code> if and only if the proof and the inputs are valid. To facilitate the call, you can use <code>snarkJS</code> to generate the parameters of the call by typing:</p>
 <pre><code class="language-text">snarkjs generatecall
