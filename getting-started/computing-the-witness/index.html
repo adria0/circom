@@ -404,15 +404,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#computing-the-witness-from-the-webassembly-directory" class="md-nav__link">
-    Computing the witness from the WebAssembly directory 
+  <a href="#computing-the-witness-with-webassembly" class="md-nav__link">
+    Computing the witness with WebAssembly 
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#computing-the-witness-from-the-c-directory" class="md-nav__link">
-    Computing the witness from the C++ directory 
+  <a href="#computing-the-witness-with-c" class="md-nav__link">
+    Computing the witness with C++  
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-witness-file" class="md-nav__link">
+    The Witness file
   </a>
   
 </li>
@@ -1035,15 +1042,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#computing-the-witness-from-the-webassembly-directory" class="md-nav__link">
-    Computing the witness from the WebAssembly directory 
+  <a href="#computing-the-witness-with-webassembly" class="md-nav__link">
+    Computing the witness with WebAssembly 
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#computing-the-witness-from-the-c-directory" class="md-nav__link">
-    Computing the witness from the C++ directory 
+  <a href="#computing-the-witness-with-c" class="md-nav__link">
+    Computing the witness with C++  
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-witness-file" class="md-nav__link">
+    The Witness file
   </a>
   
 </li>
@@ -1076,22 +1090,24 @@
 </code></pre>
 <p>Now, we calculate the witness and generate a binary file <code>witness.wtns</code> containing it in a format accepted by <code>snarkjs</code>.</p>
 <p>After calling the <code>circom</code> compiler with the flag <code>--wasm</code> and the circuit <code>multiplier2.circom</code> we can find a <code>multiplier2_js</code> folder that contains the <code>Wasm</code> code in multiplier2.wasm and all the needed <code>JavaScript</code> files.</p>
-<h2 id="computing-the-witness-from-the-webassembly-directory">Computing the witness from the WebAssembly directory <a id="witness-from-wasm-directory"></a></h2>
+<h2 id="computing-the-witness-with-webassembly">Computing the witness with WebAssembly <a id="witness-from-wasm-directory"></a></h2>
 <p>Enter in the directory <code>multiplier2_js</code>, add the input in a file <code>input.json</code> and execute:</p>
 <pre><code class="language-text">node generate_witness.js multiplier2.wasm input.json witness.wtns
 </code></pre>
-<h2 id="computing-the-witness-from-the-c-directory">Computing the witness from the C++ directory <a id="witness-from-c-directory"></a></h2>
-<p>Instead of using the WebAssembly directory, we can alternatively use the C++ directory to compute the witness using the previous file <code>input.json</code>. Then we need to call the <code>circom</code> compiler with the flag <code>--c</code> and will get a <code>multiplier2_cpp</code> folder that contains the all <code>C++</code> code needed to compute the witness and a Makefile to easily generate an executable program.</p>
-<p>Enter in the directory <code>multiplier2_cpp</code> and execute:</p>
+<h2 id="computing-the-witness-with-c">Computing the witness with C++  <a id="witness-from-c-directory"></a></h2>
+<p>As a faster alternative, we can use the C++ directory to compute the witness using the previous file <code>input.json</code>. This directory is created when using the <code>circom</code> compiler with the flag <code>--c</code>. In our example, the compiler creates a <code>multiplier2_cpp</code> folder that contains all the <code>C++</code> code needed to compute the witness and a Makefile to easily generate the corresponding executable program.</p>
+<p>To do so, enter the directory <code>multiplier2_cpp</code> and execute:</p>
 <pre><code class="language-text">make
 </code></pre>
-<p>which creates an executable called <code>multiplier2</code>. </p>
+<p>The previous command creates an executable called <code>multiplier2</code>. </p>
 <p>Note. To compile the C++ source, we rely on some libraries that you need to have installed in your system. 
 In particular, we use <code>nlohmann-json3-dev</code>, <code>libgmp-dev</code> and <code>nasm</code>.</p>
-<p>After the executable is created, we execute it indicating the input file and the name for the witness file. </p>
+<p>After the executable is created, we execute it indicating the input file and the name for the witness file: </p>
 <pre><code class="language-text">./multiplier2 input.json witness.wtns
 </code></pre>
-<p>This command will generate the file <code>ẁitness.wtns</code> which has a format compatible with <code>snarkjs</code>, and can be used to create the proof. </p>
+<h2 id="the-witness-file">The Witness file</h2>
+<p>The two programs will generate the same <code>ẁitness.wtns</code> file. This file is encoded in a binary format compatible with <code>snarkjs</code>, which is the tool that we use to create the actual proofs. </p>
+<p>Note. For big circuits, the C++ witness calculator is significantly faster than the WASM calculator.</p>
 <!--
 g++ -pthread -o circuit-512-32-256-64 -I ../../Fr -I ../../ ../../main.cpp ../../Fr/fr.o ../../Fr/fr.cpp ../../calcwit.cpp ../../utils.cpp circuit-512-32-256-64.cpp -lgmp -O3
 
